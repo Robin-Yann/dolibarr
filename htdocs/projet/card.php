@@ -608,12 +608,26 @@ if ($action == 'create' && $user->rights->projet->creer)
 	}
 
 	// Visibility
-	print '<tr><td>'.$langs->trans("Visibility").'</td><td class="maxwidthonsmartphone">';
 	$array = array();
 	if (empty($conf->global->PROJECT_DISABLE_PRIVATE_PROJECT)) $array[0] = $langs->trans("PrivateProject");
 	if (empty($conf->global->PROJECT_DISABLE_PUBLIC_PROJECT)) $array[1] = $langs->trans("SharedProject");
-	print $form->selectarray('public', $array, GETPOST('public') ?GETPOST('public') : $object->public, 0, 0, 0, '', 0, 0, 0, '', '', 1);
-	print '</td></tr>';
+	
+	if (count($array) > 0)
+	{
+		print '<tr><td>'.$langs->trans("Visibility").'</td><td class="maxwidthonsmartphone">';
+		print $form->selectarray('public', $array, GETPOSTISSET('public') ? GETPOST('public') : $object->public, 0, 0, 0, '', 0, 0, 0, '', '', 1);
+		print '</td></tr>';
+	}
+	else 
+	{
+		print '<tr><td>'.$langs->trans("Visibility").'</td><td class="maxwidthonsmartphone">';
+		print '<input type="hidden" name="public" value="'.$object->public.'">';
+
+		if ( (GETPOSTISSET('public') ? GETPOST('public') : $object->public)==0) print $langs->trans("PrivateProject");
+		else print $langs->trans("SharedProject");
+
+		print '</td></tr>';
+	}
 
 	// Date start
 	print '<tr><td>'.$langs->trans("DateStart").'</td><td>';
@@ -882,12 +896,25 @@ if ($action == 'create' && $user->rights->projet->creer)
 		}
 
 		// Visibility
-		print '<tr><td>'.$langs->trans("Visibility").'</td><td>';
 		$array = array();
 		if (empty($conf->global->PROJECT_DISABLE_PRIVATE_PROJECT)) $array[0] = $langs->trans("PrivateProject");
 		if (empty($conf->global->PROJECT_DISABLE_PUBLIC_PROJECT)) $array[1] = $langs->trans("SharedProject");
-		print $form->selectarray('public', $array, $object->public, 0, 0, 0, '', 0, 0, 0, '', '', 1);
-		print '</td></tr>';
+		if (count($array) > 0)
+		{
+			print '<tr><td>'.$langs->trans("Visibility").'</td><td>';
+			print $form->selectarray('public', $array, $object->public, 0, 0, 0, '', 0, 0, 0, '', '', 1);
+			print '</td></tr>';
+		}
+		else 
+		{
+			print '<tr><td>'.$langs->trans("Visibility").'</td><td>';
+			print '<input type="hidden" id="public" name="public" value="'.$object->public.'">';
+
+			if ($object->public==0) print $langs->trans("PrivateProject");
+			else print $langs->trans("SharedProject");
+			
+			print '</td></tr>';
+		}
 
 		if (!empty($conf->global->PROJECT_USE_OPPORTUNITIES))
 		{
