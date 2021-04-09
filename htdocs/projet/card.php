@@ -621,7 +621,7 @@ if ($action == 'create' && $user->rights->projet->creer)
 	else 
 	{
 		print '<tr><td>'.$langs->trans("Visibility").'</td><td class="maxwidthonsmartphone">';
-		print '<input type="hidden" name="public" value="'.$object->public.'">';
+		print '<input type="hidden" name="public" id="public" value="'.$object->public.'">';
 
 		if ( (GETPOSTISSET('public') ? GETPOST('public') : $object->public)==0) print $langs->trans("PrivateProject");
 		else print $langs->trans("SharedProject");
