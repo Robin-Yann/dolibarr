@@ -53,10 +53,13 @@ function contact_prepare_head(Contact $object)
 		$tab++;
 	}
 
-	$head[$tab][0] = DOL_URL_ROOT.'/contact/perso.php?id='.$object->id;
-	$head[$tab][1] = $langs->trans("PersonalInformations");
-	$head[$tab][2] = 'perso';
-	$tab++;
+	if (empty($conf->global->CONTACT_DISABLE_PERSONALINFO))
+	{
+		$head[$tab][0] = DOL_URL_ROOT.'/contact/perso.php?id='.$object->id;
+		$head[$tab][1] = $langs->trans("PersonalInformations");
+		$head[$tab][2] = 'perso';
+		$tab++;
+	}
 
 	// Related items
 	if (!empty($conf->commande->enabled) || !empty($conf->propal->enabled) || !empty($conf->facture->enabled) || !empty($conf->ficheinter->enabled) || !empty($conf->fournisseur->enabled) && empty($conf->global->MAIN_USE_NEW_SUPPLIERMOD) || !empty($conf->supplier_order->enabled) || !empty($conf->supplier_invoice->enabled))
